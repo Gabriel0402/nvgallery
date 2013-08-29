@@ -10,3 +10,8 @@ Credits
 -------
 
 [jpellgen](http://www.flickr.com/photos/jpellgen/) for the images.
+
+License
+-------
+
+NVGallery is available under the MIT license. See the LICENSE file for more info.
