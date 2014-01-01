@@ -22,10 +22,18 @@
 
 #import <UIKit/UIKit.h>
 
+// This serves, mostly, as an "update stuff after dismissing"
+@protocol NSGAlleryDelegate <NSObject>
+@optional
+- (void)imageSelected:(UIImageView*)image;
+@end
+
 @interface NVGalleryViewController : UIViewController
 
 - (id)initWithImages:(NSArray *)images;
 
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSMutableArray *imageViews;
+@property (nonatomic, strong) id <NSGAlleryDelegate> delegate;
 
 @end

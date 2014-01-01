@@ -63,17 +63,35 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 - (void)placeImages {
     [self.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    NSMutableArray *imageViews = [NSMutableArray array];
+    self.imageViews = [NSMutableArray array];
     for (UIImage *image in self.images) {
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        [imageViews addObject:imageView];
+        [self.imageViews addObject:imageView];
     }
     
-    CGSize newSize = [self setFramesToImageViews:imageViews toFitSize:self.contentView.frame.size];
+    CGSize newSize = [self setFramesToImageViews:self.imageViews toFitSize:self.contentView.frame.size];
     self.contentView.contentSize = newSize;
-    for (UIImageView *imageView in imageViews) {
+    int i=0;
+    for (UIImageView *imageView in self.imageViews) {
         [self.contentView addSubview:imageView];
+        //delegate
+        [imageView setUserInteractionEnabled:YES];
+        [imageView setTag:i];
+        i++;
+        UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imgTouchUp:)];
+        tapped.numberOfTapsRequired = 1;
+        [imageView addGestureRecognizer:tapped];
     }
+}
+
+-(void) imgTouchUp:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *) sender;
+    NSLog(@"Taped Image tag is %d", gesture.view.tag);
+    
+    UIImageView *imageView = [self.imageViews objectAtIndex:gesture.view.tag];
+    
+    //TODO, call delegate and pass the imageView
+    [self.delegate imageSelected:imageView];
 }
 
 - (void)deviceOrientationChange {
